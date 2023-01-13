@@ -4,9 +4,9 @@ import { galleryItems } from './gallery-items.js';
 const boxGalleryEl = document.querySelector('.gallery');
 const itemGalleryMarkup = createGalleryItemMarkup(galleryItems);
 
-boxGalleryEl.insertAdjacentHTML('beforeend', itemGalleryMarkup);
-
 boxGalleryEl.addEventListener('click', onBoxGalleryClick);
+
+boxGalleryEl.insertAdjacentHTML('beforeend', itemGalleryMarkup);
 
 function createGalleryItemMarkup(galleryItems) {
   return galleryItems
@@ -27,6 +27,12 @@ function createGalleryItemMarkup(galleryItems) {
 
 function onBoxGalleryClick(event) {
   event.preventDefault();
-}
 
-console.log(galleryItems);
+  if (event.target === event.currentTarget) {
+    return;
+  }
+  const instance = basicLightbox.create(`
+    <img src="${event.target.dataset.source}">`);
+
+  instance.show();
+}
