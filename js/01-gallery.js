@@ -31,8 +31,24 @@ function onBoxGalleryClick(event) {
   if (event.target === event.currentTarget) {
     return;
   }
-  const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}">`);
+  const instance = basicLightbox.create(
+    `
+    <img src="${event.target.dataset.source}">`,
+    {
+      onShow: instance => {
+        window.addEventListener('keydown', onEscKeyPress);
+      },
+      onClose: instance => {
+        window.removeEventListener('keydown', onEscKeyPress);
+      },
+    }
+  );
 
   instance.show();
+
+  function onEscKeyPress(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  }
 }
